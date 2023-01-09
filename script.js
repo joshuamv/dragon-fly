@@ -55,7 +55,7 @@ function setup() {
   }, 200);
 
   // Create 100 boids
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 75; i++) {
     boids.push(new Boid1(random(width), random(height)));
     boids.push(new Boid2(random(width), random(height)));
     boids.push(new Boid3(random(width), random(height)));
@@ -278,7 +278,7 @@ seek(target, weight) {
 display() {
   fill(255, 40, 30);
   noStroke();
-  ellipse(this.position.x, this.position.y, width/432, width/432);
+  ellipse(this.position.x, this.position.y, width/650, width/650);
 }
   }
 
@@ -431,7 +431,7 @@ seek(target, weight) {
 display() {
   fill(250, 45, 30);
   noStroke();
-  ellipse(this.position.x, this.position.y, width/432, width/432);
+  ellipse(this.position.x, this.position.y, width/650, width/650);
 }
   }
 
@@ -584,7 +584,7 @@ seek(target, weight) {
 display() {
   fill(255, 30, 30);
   noStroke();
-  ellipse(this.position.x, this.position.y, width/432, width/432);
+  ellipse(this.position.x, this.position.y, width/650, width/650);
 }
   }
 
