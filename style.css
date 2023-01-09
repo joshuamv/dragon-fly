@@ -173,7 +173,7 @@ p{
 }
 
 .wingPattern{
- height: 15vh;
+ height: 170px;
  border-radius: 8px;
  border: 1px solid #999999;
  cursor: cell;
@@ -184,4 +184,17 @@ p{
   bottom: 32px;
   left: 40px;
   box-shadow: black;
+}
+
+.warning{
+  height: 200px;
+  cursor: none;
+  position: absolute;
+  top: 80px;
+  transition: left 0.8s ease-in-out; /* Animate the left property over 0.5 seconds with ease-in-out timing function */
+  left: -300px;
+ }
+
+.warning.animate {
+  left: 40px;
 }

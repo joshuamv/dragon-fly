@@ -13,6 +13,7 @@ let shrimpValue = 0.14;
 let shrimpSpeed = 2;
 let strobe = 0;
 let hoverNest = 0;
+let warningAnimation;
 
 
 
@@ -38,6 +39,7 @@ let pollutionRegularInterval2;
 document.getElementById('wingPattern').ondragstart = function() { return false; };
 document.addEventListener('contextmenu', event => event.preventDefault());
 
+const element = document.getElementById('warning');
 
 function preload(){
     bgMap = loadImage("https://i.ibb.co/TRpC037/tv-min.png")
@@ -48,7 +50,6 @@ function setup() {
   var cnv = createCanvas(windowWidth, windowHeight);
   // Move the canvas so it’s inside a <div id="sketch-container">.
   cnv.parent('sketch-container');
-
   noCursor();
   setInterval(function() {
     pollutionLevels();
@@ -106,7 +107,7 @@ function draw() {
      strobe = 0;
   }
   if (wingMode === 2){
-     mouseValue = -0.06;
+     mouseValue = -0.29;
      shrimpValue = 0.14;
      shrimpSpeed = 2.4;
      strobe = 2;
@@ -175,12 +176,12 @@ class Boid1 {
     this.acceleration.mult(0);
 
 
-    if (this.position.y > height/1.35) {
-    this.velocity.y *= -1;
+    if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
     }
 
     if (this.position.y < height/3.2) {
-    this.velocity.y *= -1;
+    // this.velocity.y *= -1;
     }
 
   }
@@ -329,12 +330,12 @@ class Boid2 {
     this.position.add(this.velocity);
     this.acceleration.mult(0);
 
-        if (this.position.y > height/1.35) {
-    this.velocity.y *= -1;
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
     }
 
     if (this.position.y < height/3.2) {
-    this.velocity.y *= -1;
+    // this.velocity.y *= -1;
     }
   }
 
@@ -482,12 +483,12 @@ class Boid3 {
     this.position.add(this.velocity);
     this.acceleration.mult(0);
 
-        if (this.position.y > height/1.35) {
-    this.velocity.y *= -1;
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
     }
 
     if (this.position.y < height/3.2) {
-    this.velocity.y *= -1;
+    // this.velocity.y *= -1;
     }
   }
 
@@ -926,12 +927,19 @@ function keyPressed() {
     pollutionLevels();
     document.getElementById("wingPattern").src = "img/atract.png";
     document.getElementById("titleState").innerHTML = "Attract Shrimps";
+
+    warningAnimation = setTimeout(function() {
+      element.classList.add('animate');
+    }, 30000); 
   }
   if (keyCode === RIGHT_ARROW) {
+    clearTimeout(warningAnimation);
     wingMode = 2;
     pollutionLevels();
     document.getElementById("wingPattern").src = "img/repel.png";
     document.getElementById("titleState").innerHTML = "Repel Shrimps";
+
+    element.classList.remove('animate');
   }
   if (keyCode === UP_ARROW) {
     wingMode = 0;
