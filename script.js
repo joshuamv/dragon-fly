@@ -606,7 +606,8 @@ function riverBorder() {
 }
 
 function drawPointer(size) {
-  
+  drawingContext.setLineDash([0, 0]);
+
   //pointer
   fill(130, 5);
   stroke(255, 50);  // white stroke
