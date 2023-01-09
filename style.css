@@ -1,0 +1,187 @@
+/* ------------------------------------ */
+/* ----------   CSS RESET   ----------- */
+/* ------------------------------------ */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  cursor: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ------------------------------------ */
+
+canvas{
+	display:block;
+	z-index: -1;
+}
+
+#sketch-container{
+	width: 100vw;
+	height: 100vh;
+}
+
+
+h1, h2, h3, h4{
+	font-family: 'Nunito';
+	font-weight: 900;
+}
+
+h1{
+	font-size: 26px;
+	margin: 0.2em 0;
+}
+
+h2, h3{
+	font-size: 18px;
+	margin-bottom: 0.8em;
+}
+
+h4{
+	font-size: 14px;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+}
+
+p{
+	font-family: 'Helvetica';
+	font-size: 13px;
+	margin-bottom: 0.5em;
+}
+
+#bottomBar{
+  position: absolute;
+  z-index: 10;
+  bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  color:white;
+  padding: 24px 30px 24px 30px;
+  font-size: 16px;
+  font-family: sans-serif;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+#topBar{
+  position: absolute;
+  z-index: 10;
+  top: 0px;
+  display: flex;
+  flex-direction: row;
+  color:white;
+  padding: 24px 30px 24px 30px;
+  font-size: 16px;
+  font-family: sans-serif;
+  width: 100%;
+}
+
+.rightPane{
+ display: flex;
+ flex-direction: row;
+}
+
+.smallItem{
+  padding: 0px 10px 0px 10px;
+}
+
+#coordinates{
+  opacity: 0.3;
+}
+
+.title{
+  font-size: 32px;
+  font-weight: bold;
+  padding: 0px 10px 0px 10px;
+}
+
+.wingPattern{
+ height: 15vh;
+ border-radius: 8px;
+ border: 1px solid #999999;
+ cursor: cell;
+}
+
+.wingPatternText{
+  position: absolute;
+  bottom: 32px;
+  left: 40px;
+  box-shadow: black;
+}
