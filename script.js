@@ -22,7 +22,7 @@ let pbLvl1 =95;
 let kLvl1 =2.8;
 
 let rnLvl2 =114;
-let pbLvl2 =92;
+let pbLvl2 = 92;
 let kLvl2 =2.3;
 
 //intervals
@@ -606,7 +606,7 @@ function riverBorder() {
 }
 
 function drawPointer(size) {
-  drawingContext.setLineDash([0, 0]);
+  drawingContext.setLineDash([1, 0]);
 
   //pointer
   fill(130, 5);
