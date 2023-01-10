@@ -56,10 +56,14 @@ function setup() {
   }, 200);
 
   // Create 100 boids
-  for (let i = 0; i < 75; i++) {
+  for (let i = 0; i < 35; i++) {
     boids.push(new Boid1(random(width), random(height)));
     boids.push(new Boid2(random(width), random(height)));
     boids.push(new Boid3(random(width), random(height)));
+    boids.push(new Boid4(random(width), random(height)));
+    boids.push(new Boid5(random(width), random(height)));
+    boids.push(new Boid6(random(width), random(height)));
+    boids.push(new Boid7(random(width), random(height)));
   }
 	// call the reiszing function below to set the correct size for the canvs
 	resizeCnv();
@@ -86,23 +90,23 @@ function draw() {
 
   // Check if the mouse is inside the predetermined area
   if (wingMode === 1) {
-    if (mouseY > height/2.8 && mouseY < height/1.6) {
+    // if (mouseY > height/2.8 && mouseY < height/1.6) {
       // Change the values of mouseValue and shrimpValue
      mouseValue = 0.14;
      shrimpValue = 0;
      shrimpSpeed = 2.2;
      strobe = 10;
-    } else {
-    // Change the values of mouseValue and shrimpValue
-     mouseValue = 0;
-     shrimpValue = 0.14;
-     shrimpSpeed = 1;
-     strobe = 10;
-    }
+    // } else {
+    // // Change the values of mouseValue and shrimpValue
+    //  mouseValue = 0;
+    //  shrimpValue = 0.14;
+    //  shrimpSpeed = 1;
+    //  strobe = 10;
+    // }
   }
   if (wingMode === 0){
      mouseValue = 0;
-     shrimpValue = 0.14;
+     shrimpValue = 0.1;
      shrimpSpeed = 1;
      strobe = 0;
   }
@@ -130,7 +134,7 @@ function draw() {
 // Boid class
 class Boid1 {
   constructor(x, y) {
-    this.position = createVector(x, height/2.3);
+    this.position = createVector(x, height/15);
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.acceleration = createVector();
     this.maxForce = 0.05;
@@ -145,7 +149,7 @@ class Boid1 {
     let separation = this.separation(boids);
 
     // Shrimp nests
-    let nest = createVector(width/5.4, height/2);
+    let nest = createVector(width/1.3, height/1.3);
     let shrimpAttraction = p5.Vector.sub(nest, this.position);
     shrimpAttraction.setMag(shrimpValue);
 
@@ -286,7 +290,7 @@ display() {
 // Boid class
 class Boid2 {
   constructor(x, y) {
-    this.position = createVector(x, height/2.4);
+    this.position = createVector(x, height/40);
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.acceleration = createVector();
     this.maxForce = 0.05;
@@ -301,7 +305,7 @@ class Boid2 {
     let separation = this.separation(boids);
 
     // Shrimp nests
-    let nest = createVector(width/2.4, height/2.3);
+    let nest = createVector(width/1.6, height/8);
     let shrimpAttraction = p5.Vector.sub(nest, this.position);
     shrimpAttraction.setMag(shrimpValue);
 
@@ -439,7 +443,7 @@ display() {
 // Boid class
 class Boid3 {
   constructor(x, y) {
-    this.position = createVector(x, height/2.5);
+    this.position = createVector(x, height/25);
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.acceleration = createVector();
     this.maxForce = 0.05;
@@ -454,7 +458,7 @@ class Boid3 {
     let separation = this.separation(boids);
 
     // Shrimp nests
-    let nest = createVector(width/1.55, height/1.8);
+    let nest = createVector(width/1.05, height/3);
     let shrimpAttraction = p5.Vector.sub(nest, this.position);
     shrimpAttraction.setMag(shrimpValue);
 
@@ -589,21 +593,640 @@ display() {
 }
   }
 
+  // Boid class
+class Boid4 {
+  constructor(x, y) {
+    this.position = createVector(x, height/35);
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.acceleration = createVector();
+    this.maxForce = 0.05;
+    this.maxSpeed = shrimpSpeed;
+  }
+
+  // Update the boid's position and velocity
+  update() {
+    // Flocking behavior
+    let alignment = this.align(boids);
+    let cohesion = this.cohesion(boids, 0.001);
+    let separation = this.separation(boids);
+
+    // Shrimp nests
+    let nest = createVector(width/3.2, height/15);
+    let shrimpAttraction = p5.Vector.sub(nest, this.position);
+    shrimpAttraction.setMag(shrimpValue);
+
+    // Mouse interaction
+    let mouse = createVector(mouseX, mouseY);
+    let mouseAttraction = p5.Vector.sub(mouse, this.position);
+    mouseAttraction.setMag(mouseValue);
+
+    // Generate a small noise value
+    let randomMovement = random(-this.maxSpeed * 0.05, this.maxSpeed * 0.04);
+
+        // Add noise to the acceleration
+    let noiseMovement = createVector(noise(this.position.x, this.position.y), noise(this.position.y, this.position.x));
+    noiseMovement.setMag(0.1);
+
+    this.acceleration.add(alignment);
+    this.acceleration.add(cohesion);
+    this.acceleration.add(separation);
+    this.acceleration.add(randomMovement);
+    this.acceleration.add(noiseMovement);
+    this.acceleration.add(mouseAttraction);
+    this.acceleration.add(shrimpAttraction);
+
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
+    }
+
+    if (this.position.y < height/3.2) {
+    // this.velocity.y *= -1;
+    }
+  }
+
+  // Align the boid with its neighbors
+  align(boids) {
+    let sum = createVector();
+    let count = 0;
+    for (let other of boids) {
+      let d = p5.Vector.dist(this.position, other.position);
+      if (d > 0 && d < 20) {
+        sum.add(other.velocity);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      sum.setMag(this.maxSpeed);
+      let steer = p5.Vector.sub(sum, this.velocity);
+      steer.limit(this.maxForce);
+      return steer;
+    } else {
+      return createVector();
+    }
+  }
+
+// Cohere with the average position of its neighbors
+cohesion(boids, weight) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(sin(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      sum.add(other.position);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    return this.seek(sum, weight);
+  } else {
+    return createVector();
+  }
+}
+
+
+
+// Separate from its neighbors to avoid crowding
+separation(boids) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(cos(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      let diff = p5.Vector.sub(this.position, other.position);
+      diff.normalize();
+      diff.div(d);
+      sum.add(diff);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    sum.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(sum, this.velocity);
+    steer.limit(this.maxForce);
+    return steer;
+  } else {
+    return createVector();
+  }
+}
+
+
+// Seek a target position
+seek(target, weight) {
+  let desired = p5.Vector.sub(target, this.position);
+  desired.setMag(this.maxSpeed);
+  let steer = p5.Vector.sub(desired, this.velocity);
+  steer.limit(this.maxForce * weight); // Multiply the steering force by the weight
+  return steer;
+}
+
+
+// Display the boid as an orange circle
+display() {
+  fill(255, 30, 30);
+  noStroke();
+  ellipse(this.position.x, this.position.y, width/650, width/650);
+}
+  }
+
+  // Boid class
+class Boid5 {
+  constructor(x, y) {
+    this.position = createVector(x, height/18);
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.acceleration = createVector();
+    this.maxForce = 0.05;
+    this.maxSpeed = shrimpSpeed;
+  }
+
+  // Update the boid's position and velocity
+  update() {
+    // Flocking behavior
+    let alignment = this.align(boids);
+    let cohesion = this.cohesion(boids, 0.001);
+    let separation = this.separation(boids);
+
+    // Shrimp nests
+    let nest = createVector(width/5.4, height/1.6);
+    let shrimpAttraction = p5.Vector.sub(nest, this.position);
+    shrimpAttraction.setMag(shrimpValue);
+
+    // Mouse interaction
+    let mouse = createVector(mouseX, mouseY);
+    let mouseAttraction = p5.Vector.sub(mouse, this.position);
+    mouseAttraction.setMag(mouseValue);
+
+    // Generate a small noise value
+    let randomMovement = random(-this.maxSpeed * 0.05, this.maxSpeed * 0.04);
+
+        // Add noise to the acceleration
+    let noiseMovement = createVector(noise(this.position.x, this.position.y), noise(this.position.y, this.position.x));
+    noiseMovement.setMag(0.1);
+
+    this.acceleration.add(alignment);
+    this.acceleration.add(cohesion);
+    this.acceleration.add(separation);
+    this.acceleration.add(randomMovement);
+    this.acceleration.add(noiseMovement);
+    this.acceleration.add(mouseAttraction);
+    this.acceleration.add(shrimpAttraction);
+
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
+    }
+
+    if (this.position.y < height/3.2) {
+    // this.velocity.y *= -1;
+    }
+  }
+
+  // Align the boid with its neighbors
+  align(boids) {
+    let sum = createVector();
+    let count = 0;
+    for (let other of boids) {
+      let d = p5.Vector.dist(this.position, other.position);
+      if (d > 0 && d < 20) {
+        sum.add(other.velocity);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      sum.setMag(this.maxSpeed);
+      let steer = p5.Vector.sub(sum, this.velocity);
+      steer.limit(this.maxForce);
+      return steer;
+    } else {
+      return createVector();
+    }
+  }
+
+// Cohere with the average position of its neighbors
+cohesion(boids, weight) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(sin(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      sum.add(other.position);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    return this.seek(sum, weight);
+  } else {
+    return createVector();
+  }
+}
+
+
+
+// Separate from its neighbors to avoid crowding
+separation(boids) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(cos(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      let diff = p5.Vector.sub(this.position, other.position);
+      diff.normalize();
+      diff.div(d);
+      sum.add(diff);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    sum.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(sum, this.velocity);
+    steer.limit(this.maxForce);
+    return steer;
+  } else {
+    return createVector();
+  }
+}
+
+
+// Seek a target position
+seek(target, weight) {
+  let desired = p5.Vector.sub(target, this.position);
+  desired.setMag(this.maxSpeed);
+  let steer = p5.Vector.sub(desired, this.velocity);
+  steer.limit(this.maxForce * weight); // Multiply the steering force by the weight
+  return steer;
+}
+
+
+// Display the boid as an orange circle
+display() {
+  fill(255, 30, 30);
+  noStroke();
+  ellipse(this.position.x, this.position.y, width/650, width/650);
+}
+  }
+
+  // Boid class
+class Boid6 {
+  constructor(x, y) {
+    this.position = createVector(x, height/12);
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.acceleration = createVector();
+    this.maxForce = 0.05;
+    this.maxSpeed = shrimpSpeed;
+  }
+
+  // Update the boid's position and velocity
+  update() {
+    // Flocking behavior
+    let alignment = this.align(boids);
+    let cohesion = this.cohesion(boids, 0.001);
+    let separation = this.separation(boids);
+
+    // Shrimp nests
+    let nest = createVector(width/20, height/4.6);
+    let shrimpAttraction = p5.Vector.sub(nest, this.position);
+    shrimpAttraction.setMag(shrimpValue);
+
+    // Mouse interaction
+    let mouse = createVector(mouseX, mouseY);
+    let mouseAttraction = p5.Vector.sub(mouse, this.position);
+    mouseAttraction.setMag(mouseValue);
+
+    // Generate a small noise value
+    let randomMovement = random(-this.maxSpeed * 0.05, this.maxSpeed * 0.04);
+
+        // Add noise to the acceleration
+    let noiseMovement = createVector(noise(this.position.x, this.position.y), noise(this.position.y, this.position.x));
+    noiseMovement.setMag(0.1);
+
+    this.acceleration.add(alignment);
+    this.acceleration.add(cohesion);
+    this.acceleration.add(separation);
+    this.acceleration.add(randomMovement);
+    this.acceleration.add(noiseMovement);
+    this.acceleration.add(mouseAttraction);
+    this.acceleration.add(shrimpAttraction);
+
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
+    }
+
+    if (this.position.y < height/3.2) {
+    // this.velocity.y *= -1;
+    }
+  }
+
+  // Align the boid with its neighbors
+  align(boids) {
+    let sum = createVector();
+    let count = 0;
+    for (let other of boids) {
+      let d = p5.Vector.dist(this.position, other.position);
+      if (d > 0 && d < 20) {
+        sum.add(other.velocity);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      sum.setMag(this.maxSpeed);
+      let steer = p5.Vector.sub(sum, this.velocity);
+      steer.limit(this.maxForce);
+      return steer;
+    } else {
+      return createVector();
+    }
+  }
+
+// Cohere with the average position of its neighbors
+cohesion(boids, weight) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(sin(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      sum.add(other.position);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    return this.seek(sum, weight);
+  } else {
+    return createVector();
+  }
+}
+
+
+
+// Separate from its neighbors to avoid crowding
+separation(boids) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(cos(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      let diff = p5.Vector.sub(this.position, other.position);
+      diff.normalize();
+      diff.div(d);
+      sum.add(diff);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    sum.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(sum, this.velocity);
+    steer.limit(this.maxForce);
+    return steer;
+  } else {
+    return createVector();
+  }
+}
+
+
+// Seek a target position
+seek(target, weight) {
+  let desired = p5.Vector.sub(target, this.position);
+  desired.setMag(this.maxSpeed);
+  let steer = p5.Vector.sub(desired, this.velocity);
+  steer.limit(this.maxForce * weight); // Multiply the steering force by the weight
+  return steer;
+}
+
+
+// Display the boid as an orange circle
+display() {
+  fill(255, 30, 30);
+  noStroke();
+  ellipse(this.position.x, this.position.y, width/650, width/650);
+}
+  }
+
+class Boid7 {
+  constructor(x, y) {
+    this.position = createVector(x, height/13);
+    this.velocity = createVector(random(-1, 1), random(-1, 1));
+    this.acceleration = createVector();
+    this.maxForce = 0.05;
+    this.maxSpeed = shrimpSpeed;
+  }
+
+  // Update the boid's position and velocity
+  update() {
+    // Flocking behavior
+    let alignment = this.align(boids);
+    let cohesion = this.cohesion(boids, 0.001);
+    let separation = this.separation(boids);
+
+    // Shrimp nests
+    let nest = createVector(width/2, height/2);
+    let shrimpAttraction = p5.Vector.sub(nest, this.position);
+    shrimpAttraction.setMag(shrimpValue);
+
+    // Mouse interaction
+    let mouse = createVector(mouseX, mouseY);
+    let mouseAttraction = p5.Vector.sub(mouse, this.position);
+    mouseAttraction.setMag(mouseValue);
+
+    // Generate a small noise value
+    let randomMovement = random(-this.maxSpeed * 0.05, this.maxSpeed * 0.04);
+
+        // Add noise to the acceleration
+    let noiseMovement = createVector(noise(this.position.x, this.position.y), noise(this.position.y, this.position.x));
+    noiseMovement.setMag(0.1);
+
+    this.acceleration.add(alignment);
+    this.acceleration.add(cohesion);
+    this.acceleration.add(separation);
+    this.acceleration.add(randomMovement);
+    this.acceleration.add(noiseMovement);
+    this.acceleration.add(mouseAttraction);
+    this.acceleration.add(shrimpAttraction);
+
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+
+        if (this.position.y > height/1.15) {
+    // this.velocity.y *= -1;
+    }
+
+    if (this.position.y < height/3.2) {
+    // this.velocity.y *= -1;
+    }
+  }
+
+  // Align the boid with its neighbors
+  align(boids) {
+    let sum = createVector();
+    let count = 0;
+    for (let other of boids) {
+      let d = p5.Vector.dist(this.position, other.position);
+      if (d > 0 && d < 20) {
+        sum.add(other.velocity);
+        count++;
+      }
+    }
+    if (count > 0) {
+      sum.div(count);
+      sum.setMag(this.maxSpeed);
+      let steer = p5.Vector.sub(sum, this.velocity);
+      steer.limit(this.maxForce);
+      return steer;
+    } else {
+      return createVector();
+    }
+  }
+
+// Cohere with the average position of its neighbors
+cohesion(boids, weight) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(sin(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      sum.add(other.position);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    return this.seek(sum, weight);
+  } else {
+    return createVector();
+  }
+}
+
+
+
+// Separate from its neighbors to avoid crowding
+separation(boids) {
+  let sum = createVector();
+  let count = 0;
+
+  // Use a sin function to determine the distance threshold
+  let time = millis() / 1000; // Get the current time in seconds
+  let distanceThreshold = map(cos(time), -1, 1, 0, 50);
+
+  for (let other of boids) {
+    let d = p5.Vector.dist(this.position, other.position);
+    if (d > 0 && d < distanceThreshold) {
+      let diff = p5.Vector.sub(this.position, other.position);
+      diff.normalize();
+      diff.div(d);
+      sum.add(diff);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    sum.setMag(this.maxSpeed);
+    let steer = p5.Vector.sub(sum, this.velocity);
+    steer.limit(this.maxForce);
+    return steer;
+  } else {
+    return createVector();
+  }
+}
+
+
+// Seek a target position
+seek(target, weight) {
+  let desired = p5.Vector.sub(target, this.position);
+  desired.setMag(this.maxSpeed);
+  let steer = p5.Vector.sub(desired, this.velocity);
+  steer.limit(this.maxForce * weight); // Multiply the steering force by the weight
+  return steer;
+}
+
+
+// Display the boid as an orange circle
+display() {
+  fill(255, 30, 30);
+  noStroke();
+  ellipse(this.position.x, this.position.y, width/650, width/650);
+}
+  }
 
 function riverBorder() {
   stroke(255);
   strokeWeight(1);
   noFill();
 
-  ellipse(height/3, height/3.2, 50, 50)
-    stroke(200);
-  ellipse(height/3, height/1.35, 50, 50)
+  // ellipse(height/3, height/3.2, 50, 50)
+  // ellipse(height/3, height/1.35, 50, 50)
 
-    stroke(100);
-  ellipse(width/1.4, height/1.8, 50, 50)
-  ellipse(width/2.4, height/2.3, 50, 50)
-  ellipse(width/5.4, height/2, 50, 50)
+  stroke(200);
+  ellipse(width/1.3, height/1.3, 50, 50)
 
+
+  stroke(50);
+  ellipse(width/1.6, height/8, 50, 50)
+
+
+  stroke(50);
+  ellipse(width/1.04, height/3, 50, 50)
+  ellipse(width/3.2, height/15, 50, 50)
+  ellipse(width/5.4, height/1.6, 50, 50)
+
+  ellipse(width/20, height/4.6, 50, 50)
+  ellipse(width/2, height/2, 50, 50)
 }
 
 function drawPointer(size) {
@@ -930,7 +1553,7 @@ function keyPressed() {
 
     warningAnimation = setTimeout(function() {
       element.classList.add('animate');
-    }, 30000); 
+    }, 60000); 
   }
   if (keyCode === RIGHT_ARROW) {
     clearTimeout(warningAnimation);
