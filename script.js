@@ -55,8 +55,8 @@ function setup() {
     pollutionLevels();
   }, 200);
 
-  // Create 100 boids
-  for (let i = 0; i < 35; i++) {
+  // Create 280 boids
+  for (let i = 0; i < 40; i++) {
     boids.push(new Boid1(random(width), random(height)));
     boids.push(new Boid2(random(width), random(height)));
     boids.push(new Boid3(random(width), random(height)));
@@ -1472,46 +1472,46 @@ function pollutionLevelsUp() {
   //hover on egg zone to act
   if (hoverNest == 1) {
       if (rnLvl1 < 139) {
-        rnLvl1 += 0.4;
+        rnLvl1 += 0.6;
       }
       if (pbLvl1 < 100) {
-        pbLvl1 += 0.3;
+        pbLvl1 += 0.4;
       }
       if (kLvl1 < 3) {
-        kLvl1 += 0.01;
+        kLvl1 += 0.015;
       }
 
       if (rnLvl2 < 128) {
-        rnLvl2 += 0.3;
+        rnLvl2 += 0.6;
       }
       if (pbLvl2 < 96) {
-        pbLvl2 += 0.2;
+        pbLvl2 += 0.4;
       }
       if (kLvl2 < 2.7) {
-        kLvl2 += 0.008;
+        kLvl2 += 0.016;
       }  
     return;
   }
   
   if (hoverNest == 2) {
       if (rnLvl2 < 140) {
-        rnLvl2 += 0.4;
+        rnLvl2 += 0.5;
       }
       if (pbLvl2 < 99) {
-        pbLvl2 += 0.3;
+        pbLvl2 += 0.5;
       }
       if (kLvl2 < 3) {
-        kLvl2 += 0.01;
+        kLvl2 += 0.017;
       }
 
       if (rnLvl1 < 132) {
-        rnLvl1 += 0.3;
+        rnLvl1 += 0.5;
       }
       if (pbLvl1 < 96) {
-        pbLvl1 += 0.2;
+        pbLvl1 += 0.4;
       }
       if (kLvl1 < 2.8) {
-        kLvl1 += 0.008;
+        kLvl1 += 0.015;
       }
     return;
   }  
@@ -1519,22 +1519,22 @@ function pollutionLevelsUp() {
 
 function pollutionLevelsRegular() {
     if (rnLvl1 < 132) {
-      rnLvl1 += 0.3;
+      rnLvl1 += 0.5;
     }
     if (pbLvl1 < 96) {
-      pbLvl1 += 0.2;
+      pbLvl1 += 0.4;
     }
     if (kLvl1 < 2.8) {
-      kLvl1 += 0.008;
+      kLvl1 += 0.016;
     }
     if (rnLvl2 < 128) {
-      rnLvl2 += 0.3;
+      rnLvl2 += 0.55;
     }
     if (pbLvl2 < 96) {
-      pbLvl2 += 0.2;
+      pbLvl2 += 0.45;
     }
     if (kLvl2 < 2.7) {
-      kLvl2 += 0.008;
+      kLvl2 += 0.016;
     }  
 }
 
