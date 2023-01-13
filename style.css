@@ -2,6 +2,13 @@
 /* ----------   CSS RESET   ----------- */
 /* ------------------------------------ */
 
+@font-face {
+  font-family: 'FedraSanBooIta';
+  src: url('fonts/FedraSanBooIta.ps') format('PostScript'),
+       url('fonts/FedraSanBooIta.ttf') format('truetype'),
+       url('fonts/FedraSanBooIta.woff') format('woff');
+}
+
 /* Box sizing rules */
 *,
 *::before,
@@ -120,7 +127,7 @@ h4{
 }
 
 p{
-	font-family: 'Helvetica';
+	font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
 	font-size: 13px;
 	margin-bottom: 0.5em;
 }
@@ -145,7 +152,7 @@ p{
   z-index: 10;
   top: 0px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   color:white;
   padding: 24px 30px 24px 30px;
   font-size: 16px;
@@ -159,17 +166,44 @@ p{
 }
 
 .smallItem{
-  padding: 0px 10px 0px 10px;
+  padding: 0px 24px 0px 0px;
 }
 
 #coordinates{
   opacity: 0.3;
+  font-weight: 100;
+}
+
+.title-container{
+  display: flex;
+  flex-direction: row;
 }
 
 .title{
   font-size: 32px;
   font-weight: bold;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 8px 0px 0px;
+}
+
+/* .title-stage{
+  font-family: Helvetica-Neue, sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 0px 8px 0px 0px;
+} */
+
+.subtitle{
+  font-size: 16px;
+  margin-top: -5px;
+  padding: 0px 10px 0px 0px;
+}
+
+.italicFont{
+  font-family: 'Lato', sans-serif;
+  /* font-family: 'Sofia Sans', sans-serif; */
+
+  font-style: italic;
+  font-weight: regular;
 }
 
 .wingPattern{
@@ -190,11 +224,11 @@ p{
   height: 200px;
   cursor: none;
   position: absolute;
-  top: 80px;
+  top: 100px;
   transition: left 0.8s ease-in-out; /* Animate the left property over 0.5 seconds with ease-in-out timing function */
   left: -300px;
  }
 
 .warning.animate {
-  left: 40px;
+  left: 30px;
 }

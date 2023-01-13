@@ -18,7 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
 		<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
 
-  </head>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@1,400;1,500&display=swap" rel="stylesheet">  </head>
 
 
   <body>
@@ -26,15 +27,23 @@
     	<!-- Our P5 sketch will go here! -->
   	</div>
     <div id="topBar">
-      <div class="title" id="titleState">
-        No Effect
+      <div class="title-container">
+        <div class="title" id="titleState">
+          Ingenuita-Alarum
+        </div>
+        <!-- <div class="title-stage" id="title-stage">
+          Stage
+        </div> -->
+      </div>
+      <div class="subtitle italicFont" id="subtitle">
+        No Effect on the Red Shrimp
       </div>
     </div>
 
     <div id="bottomBar">
       <img class="wingPattern" id="wingPattern" src="img/normal.png" alt="">
 
-      <div class="wingPatternText" id="wingPatternText">
+      <div class="wingPatternText italicFont" id="wingPatternText">
         Wing Pattern
       </div>
 
@@ -49,7 +58,7 @@
           29°C
         </div>
         <div class="smallItem">
-          Year 502,022
+          Year 502,023
         </div>
       </div>
     </div>

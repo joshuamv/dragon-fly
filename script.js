@@ -15,7 +15,15 @@ let strobe = 0;
 let hoverNest = 0;
 let warningAnimation;
 
+//delay vars
+var delayDragonfly = 100; // delay in milliseconds
+var delayX = 0; // x position of dragonfly
+var delayY = 0; // y position of dragonfly
 
+//rotate vars
+let rotateX = 0;
+let rotateY = 0;
+let angleDragonfly = 0;
 
 //levels of pollution
 let rnLvl1 =123;
@@ -73,6 +81,7 @@ function setup() {
 
 
 function draw() {
+
   image(bgMap, 0, 0, width, height);
   imageMode(CORNERS);
   eggNests();
@@ -123,7 +132,7 @@ function draw() {
     boid.display();
   }
 
-  drawPointer(5);
+  drawPointer(5, 9.15, 90);
 
 
   // textSize(32);
@@ -1229,8 +1238,13 @@ function riverBorder() {
   ellipse(width/2, height/2, 50, 50)
 }
 
-function drawPointer(size) {
+function drawPointer(size, angleWings, dragonFlyAngle) {
   drawingContext.setLineDash([1, 0]);
+
+  //rotate and delay dragonfly
+  rotateX = lerp(rotateX, mouseX, 0.11);
+  rotateY = lerp(rotateY, mouseY, 0.11);
+  angleDragonfly = atan2(mouseY - rotateY, mouseX - rotateX);
 
   //pointer
   fill(130, 5);
@@ -1254,13 +1268,38 @@ function drawPointer(size) {
   fill(200,100);
   // ellipse(mouseX, mouseY, 1, height/size*20);
   // ellipse(mouseX, mouseY, width/size*30, 1);
+  
+  push()
+    translate(rotateX, rotateY);
+    rotate(angleDragonfly+radians(dragonFlyAngle));
 
-  fill(200);
-  ellipse(mouseX, mouseY, 2, height/size/20);
-  ellipse(mouseX, mouseY, width/size/30, 2);
+    //dragonfly
 
-  ellipse(mouseX, mouseY, 1, height/size/40);
-  ellipse(mouseX, mouseY, width/size/60, 1);
+    fill(180);
+    push()
+      rotate(angleWings)
+      ellipse(0, 2, width/size/20, 2);
+    pop()
+
+    push()
+      rotate(-angleWings)
+      ellipse(-0, 2, width/size/20, 2);
+    pop()
+
+    fill(200);
+    ellipse(0, 0, 1.5, height/size/14);
+
+    fill(255,255,255,20);
+    push()
+    rotate(angleWings+1)
+    ellipse(0, 2, width/size/20, 4);
+  pop()
+
+  push()
+    rotate(-angleWings-1)
+    ellipse(-0, 2, width/size/20, 4);
+  pop()
+  pop()
 }
 
 
@@ -1364,7 +1403,11 @@ function infoCard(x, y, rnLvl, pbLvl, kLvl) {
   //title
   textSize(16);
   fill(pbLvlColor, 38+(pbLvlBright-30), 255-pbLvlColor);
-  text('Pollution', x+8, y-84);
+  textFont('Lato');
+  textStyle(ITALIC);
+  text('Pollution Levels', x+8, y-84);
+  textFont('Helvetica');
+  textStyle(NORMAL);
 
   //bar text
   rnLvlDisplay = parseFloat(rnLvl.toFixed(0));
@@ -1549,7 +1592,8 @@ function keyPressed() {
     wingMode = 1;
     pollutionLevels();
     document.getElementById("wingPattern").src = "img/atract.png";
-    document.getElementById("titleState").innerHTML = "Attract Shrimps";
+    document.getElementById("titleState").innerHTML = "Ovipositio-Hypnotica";
+    document.getElementById("subtitle").innerHTML = "Attraction of the Red Shrimp";
 
     warningAnimation = setTimeout(function() {
       element.classList.add('animate');
@@ -1560,7 +1604,8 @@ function keyPressed() {
     wingMode = 2;
     pollutionLevels();
     document.getElementById("wingPattern").src = "img/repel.png";
-    document.getElementById("titleState").innerHTML = "Repel Shrimps";
+    document.getElementById("titleState").innerHTML = "Amplexation";
+    document.getElementById("subtitle").innerHTML = "Repulsion of the Red Shrimp";
 
     element.classList.remove('animate');
   }
@@ -1568,7 +1613,9 @@ function keyPressed() {
     wingMode = 0;
     pollutionLevels();
     document.getElementById("wingPattern").src = "img/normal.png";
-    document.getElementById("titleState").innerHTML = "No Effect";
+    document.getElementById("titleState").innerHTML = "Ingenuita-Alarum";
+    document.getElementById("subtitle").innerHTML = "No Effect on the Red Shrimp";
+
   }
 }
 
@@ -1594,4 +1641,8 @@ function resizeCnv(){
 
 function windowResized() { // flexible canvas size
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function mouseMoved() {
+  
 }
