@@ -1304,13 +1304,9 @@ function drawPointer(size, angleWings, dragonFlyAngle) {
 
 
 function eggNests() {
-  //ellipse shapes?
-  // ellipse(width/3.2, height/2.4, 150, 150);
-  // ellipse(width/1.2, height/1.7, 150, 150);
-
   pbLvlColor1 = map(pbLvl1, 0, 100, 1, 255);
   pbLvlBright1 = map(pbLvl1, 0, 100, 80, 0);
-  pbLvlBlue1 = map(pbLvl1, 0, 100, 255, 0);  
+  pbLvlBlue1 = map(pbLvl1, 0, 100, 255, 0);
 
   pbLvlColor2 = map(pbLvl2, 0, 100, 1, 255);
   pbLvlBright2 = map(pbLvl2, 0, 100, 80, 0);
@@ -1324,13 +1320,13 @@ function eggNests() {
       stroke(pbLvlColor1, 20+pbLvlBright1, 255-pbLvlColor1, 100);
       strokeWeight(2);
       fill(pbLvlColor1, 20+pbLvlBright1, 255-pbLvlColor1, 60);
-      rect(width/3.6, height/2.7, 150, 100, 8);
+      ellipse(width/3.2, height/2.4, 250, 250);
 
       // unhighlighted zone
       stroke(pbLvlColor2, 20+pbLvlBright2, pbLvlBlue2, 80);
       strokeWeight(1.5);
       fill(pbLvlColor2, 20+pbLvlBright2, pbLvlBlue2, 25);
-      rect(width/1.4, height/1.85, 150, 100, 8);
+      ellipse(width/1.35, height/1.7, 250, 250);
       drawingContext.setLineDash([0, 0]);
       break;
     case (hoverNest == 2):
@@ -1339,13 +1335,13 @@ function eggNests() {
       stroke(pbLvlColor2, 20+pbLvlBright2, 255-pbLvlColor2, 100);
       strokeWeight(2);
       fill(pbLvlColor2, 20+pbLvlBright2, 255-pbLvlColor2, 60);
-      rect(width/1.4, height/1.85, 150, 100, 8);
+      ellipse(width/1.35, height/1.7, 250, 250);
 
       // unhighlighted zone
       stroke(pbLvlColor1, 20+pbLvlBright1, pbLvlBlue1, 80);
       strokeWeight(1.5);
       fill(pbLvlColor1, 20+pbLvlBright1, pbLvlBlue1, 25);
-      rect(width/3.6, height/2.7, 150, 100, 8);
+      ellipse(width/3.2, height/2.4, 250, 250);
       drawingContext.setLineDash([0, 0]);
       break;
     default:
@@ -1353,12 +1349,12 @@ function eggNests() {
       stroke(pbLvlColor1, 20+pbLvlBright1, pbLvlBlue1, 80);
       strokeWeight(1.5);
       fill(pbLvlColor1, 20+pbLvlBright1, pbLvlBlue1, 25);
-      rect(width/3.6, height/2.7, 150, 100, 8);
+      ellipse(width/3.2, height/2.4, 250, 250);
 
       stroke(pbLvlColor2, 20+pbLvlBright2, pbLvlBlue2, 80);
       strokeWeight(1.5);
       fill(pbLvlColor2, 20+pbLvlBright2, pbLvlBlue2, 25);
-      rect(width/1.4, height/1.85, 150, 100, 8);
+      ellipse(width/1.35, height/1.7, 250, 250);
       drawingContext.setLineDash([0, 0]);
   }
 
@@ -1366,10 +1362,10 @@ function eggNests() {
 
 function hoverNestCheck() {
   switch (true) {
-    case (mouseX > width/3.6 && mouseX < width/3.6+150 && mouseY > height/2.7 && mouseY < height/2.7+100):
+    case (mouseX > width/4 && mouseX < width/4+250 && mouseY > height/3.2 && mouseY < height/3.2+250):
       hoverNest = 1;
       break;
-    case (mouseX > width/1.4 && mouseX < width/1.4+150 && mouseY > height/1.85 && mouseY < height/1.85+100):
+    case (mouseX > width/1.49 && mouseX < width/1.49+250 && mouseY > height/2.1 && mouseY < height/2.1+250):
       hoverNest = 2;
       break;
     default:
@@ -1381,14 +1377,16 @@ function eggNestInfo() {
 
   //hover on egg zone to show cards
   if (hoverNest == 1) {
-    infoCard(width/3.6, height/2.7, rnLvl1, pbLvl1, kLvl1);
+    // infoCard(width/4+130, height/2.4+62.5, rnLvl1, pbLvl1, kLvl1);
+    infoCard(mouseX+30, mouseY+55, rnLvl1, pbLvl1, kLvl1);
   }
 
   if (hoverNest == 2) {
-    infoCard(width/1.4, height/1.85, rnLvl2, pbLvl2, kLvl2);
+    infoCard(mouseX+30, mouseY+55, rnLvl2, pbLvl2, kLvl2);
   }
 
 }
+
 
 function infoCard(x, y, rnLvl, pbLvl, kLvl) {
   pbLvlColor = map(pbLvl, 0, 100, 1, 255);
